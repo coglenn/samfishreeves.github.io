@@ -48,6 +48,9 @@
                 <p>
                   <div id="plot"></div>
                   <py-script output="plot">
+                    from pyodide.http import pyfetch
+                    import asyncio
+                    import re 
                     import requests
                     import json
                     from pandas import json_normalize
