@@ -48,16 +48,25 @@
                 <p>
                   <div id="plot"></div>
                   <py-script output="plot">
-                  import matplotlib.pyplot as plt
-                  import numpy as np
+                    import requests
+                    import json
+                    from pandas import json_normalize
 
-                  np.random.seed(42)
+                    league_id = 97146
+                    year = 2022
 
-                  rv = np.random.standard_normal(1000)
+                    #https://fantasy.espn.com/apis/v3/games/ffl/seasons/<YEAR>/segments/0/leagues/<ID>
+                    url = f"https://fantasy.espn.com/apis/v3/games/ffl/seasons/{year}/segments/0/leagues/{league_id}"
 
-                  fig, ax = plt.subplots()
-                  ax.hist(rv, bins=30)
-                  fig
+                    r = requests.get(url,
+                                     cookies={"swid": "{6AEFCD9B-20CB-42CA-ACF3-8D4EA9321264}",
+                                              "espn_s2": "AEB4PJ3oWS4yfVSKCzUu0AJsP%2Bj3ZQerMqAB9EHH0u084yZ93xo%2Ft84cnx%2F%2B98ey3wZzuqR%2BfTGUoNIV%2F%2B0tXDbRprkKC10nH%2FWLjq42qIh9X8PJdnIDPpxr92fZHb5hGgDbhRaWPm539XY9EdhPjjurX1lkMW0KhAmT85d8B288%2F%2FeGJOqnqBzbSa%2FsMzExulGBqPd%2BtkgYokYjITMUgjx4DTysSfPgyq4BkfhYQLitgjiHjFK1ti1%2Fiw5p4vjx06SYK5mLMDedMpiKDaAIXeBf9WIdiTj7P6zlZtIQpxx3sQ%3D%3D"})
+                    #d = r.json()[0]
+                    #soup = BeautifulSoup(r.content, 'html.parser')
+                    soup = r.content
+                    dict = json.loads(soup)
+                    df2 = json_normalize(dict['teams'])
+                    df2
 
                   </py-script>
             </div>
